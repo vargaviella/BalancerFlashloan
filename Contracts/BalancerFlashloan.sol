@@ -57,14 +57,6 @@ contract BalancerFlashLoan is IFlashLoanRecipient {
         );
     }
 
-    function approve(address spender, IERC20[] memory tokens, uint256[] memory amounts) external {
-        require(tokens.length == amounts.length, "Token and amount arrays must have the same length");
-
-        for (uint256 i = 0; i < tokens.length; i++) {
-            tokens[i].approve(spender, amounts[i]);
-        }
-    }
-
     function withdrawTokens(IERC20[] memory tokens, uint256[] memory amounts) external onlyOwner {
         require(tokens.length == amounts.length, "Token and amount arrays must have the same length");
 
@@ -74,10 +66,6 @@ contract BalancerFlashLoan is IFlashLoanRecipient {
 
             tokens[i].transfer(msg.sender, amounts[i]);
         }
-    }
-
-    function receiveTokens(IERC20 token, uint256 amount) external {
-        token.transferFrom(msg.sender, address(this), amount);
     }
 
     function withdrawEther(uint256 amount) external onlyOwner {
